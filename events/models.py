@@ -12,3 +12,4 @@ class Events(models.Model):
 class Tickets(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     event = models.ForeignKey(Events, on_delete=models.CASCADE)
+    

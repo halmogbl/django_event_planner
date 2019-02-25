@@ -63,7 +63,7 @@ class Logout(View):
 
 class dashboard(View):
     template_name = 'dashboard.html'
-    
+
     def get(self, request, *args, **kwargs):
-        
+
         return render(request, self.template_name)
