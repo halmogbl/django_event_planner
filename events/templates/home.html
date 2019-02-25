@@ -6,11 +6,43 @@
     <div class="container">
       <h1 class="masthead-heading mb-0">All the events,</h1>
       <h2 class="masthead-subheading mb-0">You could ever want...</h2>
+
       {% if request.user.is_anonymous %}
         <a href="{% url 'signup' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up to find events!</a>
       {% else %}
-        <a href="#" class="btn btn-primary btn-xl rounded-pill mt-5">Find events!</a>
+         <a href="#" class="btn btn-primary btn-xl rounded-pill mt-5">Find events!</a>
+
     {% endif %}
+
+
+
+
+
+
+
+        {% for event in recent_events %}
+
+<br>
+<br>
+<br>
+<br>
+        <div class="card w-100">
+          <div class="card-body" >
+            <h2 class="text-dark">{{event.title}}</h2>
+            <p class="text-dark" >{{event.description}}</p>
+            <p class="text-dark" >{{event.date}}   {{event.time}}</p>
+
+      <a href= "{% url 'event-detail' event.id %}" class="btn btn-primary btn-xl rounded-pill mt-5"">VIEW EVENTS</a>
+          </div>
+        </div>
+        {% endfor %}
+
+
+
+<p><a href="#" class="text-dark"></a></p>
+
+
+
     </div>
   </div>
   <div class="bg-circle-1 bg-circle"></div>
