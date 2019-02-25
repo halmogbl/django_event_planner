@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import UserSignup, UserLogin
+from django.contrib import messages
 
 def home(request):
     return render(request, 'home.html')
@@ -59,3 +60,10 @@ class Logout(View):
         messages.success(request, "You have successfully logged out.")
         return redirect("login")
 
+
+class dashboard(View):
+    template_name = 'dashboard.html'
+    
+    def get(self, request, *args, **kwargs):
+        
+        return render(request, self.template_name)
