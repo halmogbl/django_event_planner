@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Create{% endblock title %}
+
+{% block content %}
+
+
+<header class="masthead text-center text-white">
+  <div class="masthead-content">
+    <div class="container">
+          <div class="card">
+            <h5 class="card-header">Book a Ticket</h5>
+            <div class="card-body">
+                  <form action="{% url 'ticket-create' event.id %}" method="POST" >
+                      {% csrf_token %}
+                      {{form|crispy}}
+                      <input type="submit" value="Create" class="btn btn-outline-success">
+                  </form>
+            </div>
+          </div>
+        </div>
+      </div>
+  </header>
+{% endblock content %}

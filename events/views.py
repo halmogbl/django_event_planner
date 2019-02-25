@@ -4,6 +4,7 @@ from django.views import View
 from .forms import UserSignup, UserLogin, EventForm
 from django.contrib import messages
 from .models import Event,Ticket
+from django.http import Http404
 
 def home(request):
     recent_events = Event.objects.all()
@@ -12,20 +13,6 @@ def home(request):
 	}
     return render(request, 'home.html',  context)
 
-
-
-def event_detail(request, event_id):
-	if request.user.is_anonymous:
-		return redirect('login')
-	event = Event.objects.get(id=event_id)
-    #ticket = Ticket.objects.filter(event=event)
-
-
-	context = {
-		"event": event,
-        #"ticket": ticket
-	}
-	return render(request, 'event_detail.html', context)
 
 
 
@@ -149,8 +136,84 @@ def event_update(request, event_id):
 
 
 
+def ticket_update(request, event_id):
+	event = Event.objects.get(id=event_id)
+
+	if request.user.is_anonymous:
+		return redirect('login')
+
+	if not(request.user.is_staff or request.user == event.added_by):
+		raise Http404
+
+	form = EventForm(instance=event)
+	if request.method == "POST":
+		form = EventForm(request.POST)
+		if form.is_valid():
+
+			form.save()
+
+			return redirect("dashboard")
+	context = {
+		'form': form,
+		"event": event,
+	}
+	return render(request, 'ticket_update.html', context)
 
 
+
+
+
+def event_delete(request, event_id):
+	event = Event.objects.get(id=event_id)
+
+	if request.user.is_anonymous:
+		return redirect('login')
+	elif not (request.user.is_staff or request.user == event.added_by):
+		raise Http404
+
+	Event.objects.get(id=event_id).delete()
+	messages.success(request, "Successfully Deleted!")
+	return redirect('dashboard')
+
+
+
+
+def event_detail(request, event_id):
+	if request.user.is_anonymous:
+		return redirect('login')
+	event = Event.objects.get(id=event_id)
+    #ticket = Ticket.objects.filter(event=event)
+
+
+	context = {
+		"event": event,
+        #"ticket": ticket
+	}
+	return render(request, 'event_detail.html', context)
+
+
+
+
+def add_Ticket(request, event_id):
+    ticket_form = AddTicket()
+    event = Event.objects.get(id=event_id)
+    user = User.objects.get(request.user.id)
+
+    if not (request.user.is_staff or request.user == event.added_by):
+        return redirect('no-access')
+
+    if request.method == "POST":
+        form = AddTicket(request.POST, instance=event)
+        if form.is_valid():
+            ticket = form.save(commit=False)
+            ticket.classroom = event
+            ticket.save()
+            return redirect('event-detail', event_id)
+    context = {
+        "ticket_form":ticket_form,
+        "event": event,
+    }
+    return render(request, 'ticket_create.html', context )
 
 
 

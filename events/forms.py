@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Event
+from .models import Event, Ticket
 
 
 
@@ -29,3 +29,8 @@ class EventForm(forms.ModelForm):
            'date': forms.DateInput(attrs={'type': 'date'}),
            'time': forms.TimeInput(attrs={'type': 'time'}),
        }
+
+class TicketForm(forms.ModelForm):
+   class Meta:
+       model = Ticket
+       fields = ['tickets']
