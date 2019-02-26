@@ -156,7 +156,7 @@ def event_detail(request, event_id):
     ticket = TicketForm()
     
     event_tickets_added = event.tickets.all()
-    event_tickets_left = event.tickets.all()
+    event_tickets_left = event.seats_left()
 
     context = {
 		"event": event,
