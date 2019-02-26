@@ -168,17 +168,24 @@ def event_detail(request, event_id):
 
 
 def add_Ticket(request, event_id):
+    
     event = Event.objects.get(id=event_id)
+    event_tickets_left = event.seats_left()
     ticket_form = TicketForm(request.POST)
     if ticket_form.is_valid():
-        ticket = ticket_form.save(commit=False)
-        ticket.event = event
-        # assign user
-        ticket.user = request.user
-        ticket.save()
-        return redirect('dashboard')
-    # redirect to detail page
-    return redirect('event-detail')
+        booking = ticket_form.save(commit=False)
+        if event_tickets_left == 0:
+            messages.success(request, "No Seats Availble")
+            return redirect('event-detail', event_id )
+        elif booking.tickets > event_tickets_left:
+            messages.success(request, "Go away integer!")
+            return redirect('event-detail', event_id )
+        else:
+            booking.event = event
+            booking.user = request.user
+            booking.save()
+            return redirect('dashboard')
+    return redirect('event-detail', event_id=event_id)
 
 
 

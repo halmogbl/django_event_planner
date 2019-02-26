@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
-<header class="masthead text-center text-white">
+<header onlaod="check_seats({{event_tickets_left}})" class="masthead text-center text-white">
   <div class="masthead-content">
     <div class="container">
       <h3 class="mb-0">Events I Orgnized</h3>
@@ -32,7 +32,11 @@
             </tr>
           </tbody>
         </table>
-        <form class="col-4" action="{% url 'ticket-create' event.id %}" method="POST" >
+
+
+
+
+        <form id="show_form" class="col-4" action="{% url 'ticket-create' event.id %}" method="POST" >
             {% csrf_token %}
             {{ticket|crispy}}
             <button class="btn btn-outline-success" type="submit">Book</button>
@@ -68,6 +72,23 @@
   </div>
 
 </header>
+<script>
+      $(document).ready(function(id) { 
+          
+          if(id = 0){
+            
+            document.getElementById("show_form").style.display = "none";
+            document.getElementById("check_seats").style.display = "block";
+            
+          }
+          else{
+            document.getElementById("show_form").style.display = "block";
+            document.getElementById("check_seats").style.display = "none";
+          }
+        });
+      
+    
+  </script>
 
 
 
