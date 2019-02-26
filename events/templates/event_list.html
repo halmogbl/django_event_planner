@@ -1,0 +1,68 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+    <header class="masthead text-center text-white">
+        <div class="masthead-content">
+            <div class="container">
+                    <h1 class="masthead-heading mb-0">All the events,</h1>
+                    <h2 class="masthead-subheading mb-0">You could ever want...</h2>
+
+                    <br>
+                    <br>
+                    <br>
+
+        {% if request.user.is_anonymous %}
+                      <a href="{% url 'signup' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up to find events!</a>
+        {% else %}
+
+
+                  
+
+
+              <form action="{% url 'event-list' %}">
+                    <div class="input-group mb-3">
+                        <input class="form-control" placeholder="Search" name="search" value="{{ request.GET.search }}">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary btn-xl rounded-pill mt-5 my-2 my-sm-0" type="submit">Search <i class="fas fa-search"></i></button>
+                            </div>
+                    </div>
+              </form>
+
+                  {% for event in events %}
+
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                        <div class="card w-100">
+                            <div class="card-body" >
+                                <h2 class="text-dark">{{event.title}}</h2>
+                                <p class="text-dark" >{{event.description}}</p>
+                                <p class="text-dark" >{{event.date}}   {{event.time}}</p>
+
+                                <a href= "{% url 'event-detail' event.id %}" class="btn btn-primary btn-xl rounded-pill mt-5"> Event Detail</a>
+                                
+                           </div>
+                        </div>
+        {% endfor %}
+
+
+            
+
+
+
+          </div>
+      </div>
+
+<div class="bg-circle-1 bg-circle"></div>
+<div class="bg-circle-2 bg-circle"></div>
+<div class="bg-circle-3 bg-circle"></div>
+<div class="bg-circle-4 bg-circle"></div>
+
+
+  </header>
+
+      {% endif %}
+
+{% endblock %}

@@ -1,42 +1,44 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.views import View
-from .forms import UserSignup, UserLogin, EventForm
+from .forms import UserSignup, UserLogin, EventForm, TicketForm
 from django.contrib import messages
 from .models import Event,Ticket
 from django.http import Http404
+from django.contrib.auth.models import User
+from django.db.models import Q
+from datetime import datetime
+
 
 def home(request):
-    recent_events = Event.objects.all()
+    # filter to not show past events
+    recent_events = Event.objects.filter(date__gte=datetime.today()).order_by('-date','time')[ :10 ]
+
     context = {
-		"recent_events": recent_events,
-	}
+        "recent_events": recent_events,
+    }
     return render(request, 'home.html',  context)
 
 
-
-
-
-
-
-
-
 def event_list(request):
-    events = Event.objects.all()
-    query = request.GET.get('q')
+    # filter to not show past events
+   
+    events = Event.objects.filter(date__gte=datetime.today()).order_by('-date','time')
+    query = request.GET.get('search')
     if query:
-        event = event.filter(
+        events = events.filter(
             Q(title__icontains=query)|
             Q(description__icontains=query)|
             Q(added_by__username__icontains=query)
         ).distinct()
 
-
     context = {
        "events": events
 
     }
-    return render(request, 'events.html', context)
+    return render(request, 'event_list.html', context)
+
+
 
 
 class Signup(View):
@@ -105,12 +107,9 @@ def event_create(request):
             event.save()
             return redirect('dashboard')
     context = {
-                "form":form,
-            }
-
+        "form":form,
+    }
     return render(request, 'event-create.html', context)
-
-
 
 
 def event_update(request, event_id):
@@ -133,102 +132,73 @@ def event_update(request, event_id):
 		"event": event,
 	}
 	return render(request, 'event_update.html', context)
-
-
-
-def ticket_update(request, event_id):
-	event = Event.objects.get(id=event_id)
-
-	if request.user.is_anonymous:
-		return redirect('login')
-
-	if not(request.user.is_staff or request.user == event.added_by):
-		raise Http404
-
-	form = EventForm(instance=event)
-	if request.method == "POST":
-		form = EventForm(request.POST)
-		if form.is_valid():
-
-			form.save()
-
-			return redirect("dashboard")
-	context = {
-		'form': form,
-		"event": event,
-	}
-	return render(request, 'ticket_update.html', context)
-
-
-
-
+    
 
 def event_delete(request, event_id):
-	event = Event.objects.get(id=event_id)
-
-	if request.user.is_anonymous:
-		return redirect('login')
-	elif not (request.user.is_staff or request.user == event.added_by):
-		raise Http404
-
-	Event.objects.get(id=event_id).delete()
-	messages.success(request, "Successfully Deleted!")
-	return redirect('dashboard')
+    event = Event.objects.get(id=event_id)
+    if request.user.is_anonymous:
+        return redirect('login')
+    
+    elif not (request.user.is_staff or request.user == event.added_by):
+        raise Http404
+        
+    event.delete()
+    messages.success(request, "Successfully Deleted!")
+    return redirect('dashboard')
 
 
 
 
 def event_detail(request, event_id):
-	if request.user.is_anonymous:
-		return redirect('login')
-	event = Event.objects.get(id=event_id)
-    #ticket = Ticket.objects.filter(event=event)
+    if request.user.is_anonymous:
+        return redirect('login')
+    event = Event.objects.get(id=event_id)
+    ticket = TicketForm()
+    
+    event_tickets_added = event.tickets.all()
+    event_tickets_left = event.tickets.all()
 
-
-	context = {
+    context = {
 		"event": event,
-        #"ticket": ticket
+        "ticket": ticket,
+        "event_tickets_added": event_tickets_added,
+        "event_tickets_left": event_tickets_left
 	}
-	return render(request, 'event_detail.html', context)
-
-
+    return render(request, 'event_detail.html', context)
 
 
 def add_Ticket(request, event_id):
-    ticket_form = AddTicket()
     event = Event.objects.get(id=event_id)
-    user = User.objects.get(request.user.id)
-
-    if not (request.user.is_staff or request.user == event.added_by):
-        return redirect('no-access')
-
-    if request.method == "POST":
-        form = AddTicket(request.POST, instance=event)
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            ticket.classroom = event
-            ticket.save()
-            return redirect('event-detail', event_id)
-    context = {
-        "ticket_form":ticket_form,
-        "event": event,
-    }
-    return render(request, 'ticket_create.html', context )
+    ticket_form = TicketForm(request.POST)
+    if ticket_form.is_valid():
+        ticket = ticket_form.save(commit=False)
+        ticket.event = event
+        # assign user
+        ticket.user = request.user
+        ticket.save()
+        return redirect('dashboard')
+    # redirect to detail page
+    return redirect('event-detail')
 
 
 
 
 
 def dashboard(request):
-    #events_added = Event.objects.all()
-    #events = request.user.event.all().values_list('movie', flat=True)
 
-    user_events_added = []
-    user_events_added = request.user.event_set.all()
-    events = Event.objects.filter(id__in=user_events_added)
+    user_events_added = request.user.events.all()
+    user_tickets_added = request.user.tickets.all()
+    
+    
+    #final_calc = Event.seats_left()
+    #print(final_calc)
+    #final_calc = 0
+    #for event_tickets in user_events_added:
+        #final_calc = int(event_tickets.seats)
 
     context = {
-       "events": events,
-       "user_events_added":user_events_added
+       "user_events_added":user_events_added,
+       "user_tickets_added":user_tickets_added,
+       #"final_calc": final_calc
     }
     return render(request, 'dashboard.html', context)

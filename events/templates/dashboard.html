@@ -18,14 +18,14 @@
             </tr>
           </thead>
           <tbody>
-            {% for event in events %}
+            {% for event in user_events_added %}
             <tr>
               <td>{{event.title}}</td>
               <td>{{event.date}}</td>
               <td>{{event.time}}</td>
               <td>{{event.location}}</td>
               <td>{{event.seats}}</td>
-              <td></td>
+              <td>{{event.seats_left}}</td>
               <td><a href=" {% url 'event-detail' event.id %}"> View </a></td>
 
             </tr>
@@ -41,21 +41,21 @@
         <thead>
           <tr>
             <th>Title</th>
-            <th>Date</th>
-            <th>Time</th>
+            <th>Date & Time</th>
             <th>Location</th>
             <th>Tickets</th>
 
           </tr>
         </thead>
         <tbody>
-          {% for event in events %}
+          {% for ticket in user_tickets_added %}
           <tr>
-            <td>{{event.title}}</td>
-            <td>{{event.date}}</td>
-            <td>{{event.time}}</td>
-            <td>{{event.location}}</td>
-            <td>{{event.seats}}</td>
+
+            <td>{{ticket.event.title}}</td>
+            <td>{{ticket.datetime}}</td>
+            <td>{{ticket.event.location}}</td>
+            <td>{{ticket.tickets}}</td>
+        
           </tr>
           {% endfor %}
         </tbody>

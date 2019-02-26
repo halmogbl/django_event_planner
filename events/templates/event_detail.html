@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load crispy_forms_tags %}
 {% block content %}
 <header class="masthead text-center text-white">
   <div class="masthead-content">
@@ -22,19 +22,48 @@
               <td>{{event.date}}</td>
               <td>{{event.time}}</td>
               <td>{{event.location}}</td>
-              <td>{{event.seats}}</td>
-              <td></td>
+              <td>{{event.tickets}}</td>
+              
+                  
+             <td>{{event_tickets_left.seats_left}}</td>
+           
               <td><a href="{% url 'event-update' event.id %}"> Edit </a></td>
               <td><a href="{% url 'event-delete' event.id %}"> Delete </a></td>
-
             </tr>
           </tbody>
         </table>
-        <form action="{% url 'ticket-create' event.id %}" method="POST" >
+        <form class="col-4" action="{% url 'ticket-create' event.id %}" method="POST" >
             {% csrf_token %}
-            {{ticket_form}}
-            <input type="submit" value="Book" class="btn btn-outline-success">
+            {{ticket|crispy}}
+            <button class="btn btn-outline-success" type="submit">Book</button>
         </form>
+
+        {% if request.user == event.added_by %}
+
+        <h3 class="mb-0">Tickets Booked</h3>
+        <table class="table table-dark">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Date & Time</th>
+              <th>Event Title</th>
+              <th>Number of Tickets</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            {% for tickets in event_tickets_added %}
+            <tr>
+              <td>{{tickets.user}}</td>
+              <td>{{tickets.datetime}}</td>
+              <td>{{tickets.event.title}}</td>
+              <td>{{tickets.tickets}}</td>
+      
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+    {% endif %}
     </div>
   </div>
 
