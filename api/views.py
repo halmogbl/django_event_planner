@@ -20,9 +20,11 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.response import Response
 from rest_framework.status import HTTP_200_OK, HTTP_400_BAD_REQUEST
 from rest_framework.views import APIView
+from datetime import datetime
 
 
 # Create your views here.
+# no need
 class UserLoginAPIView(APIView):
     serializer_class = UserLoginSerializer
 
@@ -41,7 +43,8 @@ class UserCreateAPIView(CreateAPIView):
 
 
 class EventList(ListAPIView):
-    queryset = Event.objects.all()
+    # filter by date
+    queryset = Event.objects.filter(date__gte=datetime.today()).order_by('-date','time')
     serializer_class = EventListSerializer
     permission_classes = [AllowAny,]
     filter_backends = [SearchFilter, OrderingFilter,]

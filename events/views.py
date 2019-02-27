@@ -215,11 +215,12 @@ def avatar(email, size):
 
 
 def profile(request):
+    if request.user.is_anonymous:
+        return redirect('login')
+
     profile_image = avatar(request.user.email, 512)
     profile= request.user
     form = UserSignup(instance=profile)
-    if request.user.is_anonymous:
-        return redirect('login')
 
     context = {
         "form": form,
@@ -236,21 +237,22 @@ def profile_edit(request):
         return redirect('login')
 
 
-    form = UserSignup(instance=profile)
-    if request.method == "POST":
-        form = UserSignup(request.POST, instance=profile)
-        if form.is_valid():
-            user = form.save(commit=False)
-            user.set_password(user.password)
-            user.save()
-            messages.success(request, "You have successfully updated your profile.")
-            login(request, user)
-            return redirect("profile")
+    form = UserSignup(request.POST, instance=profile)
+    if form.is_valid():
+        user = form.save(commit=False)
+        user.set_password(user.password)
+        user.save()
+        messages.success(request, "You have successfully updated your profile.")
+        login(request, user)
         return redirect("profile")
+    return redirect("profile")
 
 
 
 def organizer_profile(request,added_by):
+    if request.user.is_anonymous:
+        return redirect('login')
+    
     user = User.objects.get(id=added_by)
     events = Event.objects.filter(added_by = user)
 
@@ -259,10 +261,6 @@ def organizer_profile(request,added_by):
     following = []
     if request.user.is_authenticated:
         following = request.user.user_follow.all().values_list('user_followed', flat=True)
-    
-
-    if request.user.is_anonymous:
-        return redirect('login')
 
     context = {
         "events": events,
