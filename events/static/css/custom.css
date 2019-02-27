@@ -1,9 +1,19 @@
 .color_form {
     color:#2d2b33;
     text-align: left;
-    padding-left: 10px;
     font-size: 20px;
 
+}
+
+
+
+.text_follow{
+background:#ee0979;
+color:#fff!important;
+
+}
+.orgin_color{
+    color:green!important;
 }
 
 .header_style{
@@ -59,6 +69,11 @@ animation-iteration-count: infinite;
 100% {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
 }
 
+.profile-img img {
+    width: 30%!important;
+
+}
+
 
 .msa_book {
     background-color: #212529!important;
@@ -70,7 +85,10 @@ animation-iteration-count: infinite;
 
 /************Profile************/
 
-
+.text_follow_border{
+    border-color:#ee0979;
+    color:#ee0979
+}
 
 
 .img-rounded{

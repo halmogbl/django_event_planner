@@ -13,12 +13,8 @@
                     <br>
 
         {% if request.user.is_anonymous %}
-                      <a href="{% url 'signup' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up to find events!</a>
+                <a href="{% url 'signup' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up to find events!</a>
         {% else %}
-
-
-                  
-
 
               <form action="{% url 'event-list' %}">
                     <div class="input-group mb-3">
@@ -46,10 +42,6 @@
                            </div>
                         </div>
         {% endfor %}
-
-
-            
-
 
 
           </div>

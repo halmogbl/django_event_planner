@@ -3,8 +3,8 @@ from django.contrib.auth import authenticate, login, logout
 from django.views import View
 from .forms import UserSignup, UserLogin, EventForm, TicketForm
 from django.contrib import messages
-from .models import Event,Ticket
-from django.http import Http404
+from .models import Event,Ticket,Following
+from django.http import Http404,JsonResponse
 from django.contrib.auth.models import User
 from django.db.models import Q
 from datetime import datetime
@@ -12,7 +12,6 @@ from hashlib import md5
 
 
 def home(request):
-    # filter to not show past events
     recent_events = Event.objects.filter(date__gte=datetime.today()).order_by('-date','time')[ :10 ]
 
     context = {
@@ -21,9 +20,8 @@ def home(request):
     return render(request, 'home.html',  context)
 
 
-def event_list(request):
-    # filter to not show past events
-   
+
+def event_list(request):   
     events = Event.objects.filter(date__gte=datetime.today()).order_by('-date','time')
     query = request.GET.get('search')
     if query:
@@ -63,6 +61,7 @@ class Signup(View):
         return redirect("signup")
 
 
+
 class Login(View):
     form_class = UserLogin
     template_name = 'login.html'
@@ -89,6 +88,7 @@ class Login(View):
         return redirect("login")
 
 
+
 class Logout(View):
     def get(self, request, *args, **kwargs):
         logout(request)
@@ -113,27 +113,29 @@ def event_create(request):
     return render(request, 'event-create.html', context)
 
 
+
 def event_update(request, event_id):
-	event = Event.objects.get(id=event_id)
+    event = Event.objects.get(id=event_id)
 
-	if request.user.is_anonymous:
-		return redirect('login')
+    if request.user.is_anonymous:
+        return redirect('login')
 
-	if not(request.user.is_staff or request.user == event.added_by):
-		raise Http404
+    if not(request.user.is_staff or request.user == event.added_by):
+        raise Http404
 
-	form = EventForm(instance=event)
-	if request.method == "POST":
-		form = EventForm(request.POST, instance=event)
-		if form.is_valid():
-			form.save()
-			return redirect("dashboard")
-	context = {
-		'form': form,
-		"event": event,
-	}
-	return render(request, 'event_update.html', context)
-    
+    form = EventForm(instance=event)
+    if request.method == "POST":
+        form = EventForm(request.POST, instance=event)
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard")
+    context = {
+        'form': form,
+        "event": event,
+    }
+    return render(request, 'event_update.html', context)
+
+
 
 def event_delete(request, event_id):
     event = Event.objects.get(id=event_id)
@@ -149,28 +151,26 @@ def event_delete(request, event_id):
 
 
 
-
 def event_detail(request, event_id):
     if request.user.is_anonymous:
         return redirect('login')
     event = Event.objects.get(id=event_id)
     ticket = TicketForm()
 
-
     event_tickets_added = event.tickets.all()
     event_tickets_left = event.seats_left()
-
 
     if event_tickets_left == 0:
         ticket.fields['tickets'].disabled = True
 
     context = {
-		"event": event,
+        "event": event,
         "ticket": ticket,
         "event_tickets_added": event_tickets_added,
         "event_tickets_left": event_tickets_left
-	}
+    }
     return render(request, 'event_detail.html', context)
+
 
 
 def add_Ticket(request, event_id):
@@ -195,24 +195,14 @@ def add_Ticket(request, event_id):
 
 
 
-
-
 def dashboard(request):
 
     user_events_added = request.user.events.all()
     user_tickets_added = request.user.tickets.all()
     
-    
-    #final_calc = Event.seats_left()
-    #print(final_calc)
-    #final_calc = 0
-    #for event_tickets in user_events_added:
-        #final_calc = int(event_tickets.seats)
-
     context = {
        "user_events_added":user_events_added,
        "user_tickets_added":user_tickets_added,
-       #"final_calc": final_calc
     }
     return render(request, 'dashboard.html', context)
 
@@ -240,8 +230,6 @@ def profile(request):
 
 
 
-
-
 def profile_edit(request):
     profile= request.user
     if request.user.is_anonymous:
@@ -259,3 +247,53 @@ def profile_edit(request):
             login(request, user)
             return redirect("profile")
         return redirect("profile")
+
+
+
+def organizer_profile(request,added_by):
+    user = User.objects.get(id=added_by)
+    events = Event.objects.filter(added_by = user)
+
+    profile_image = avatar(user.email, 512)
+
+    following = []
+    if request.user.is_authenticated:
+        following = request.user.user_follow.all().values_list('user_followed', flat=True)
+    
+
+    if request.user.is_anonymous:
+        return redirect('login')
+
+    context = {
+        "events": events,
+        "user": user,
+        "picture": profile_image,
+        "following":following
+    }
+    return render(request, 'profile_oranizer.html', context)
+
+
+
+def following(request,added_by):
+    print("test")
+    if request.user.is_anonymous:
+        return redirect('signin')
+    
+        
+    user_followed_obj = User.objects.get(id=added_by)
+    follow, created = Following.objects.get_or_create(user_follow=request.user, user_followed=user_followed_obj)
+    
+    if created:
+        followed = True
+    else:
+        followed = False
+        follow.delete()
+
+    follow_count = user_followed_obj.user_followed.count()
+    print(follow_count)
+
+    response = {
+        "followed": followed,
+        "follow_count": follow_count,
+    }
+    return JsonResponse(response)

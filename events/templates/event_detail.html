@@ -6,10 +6,9 @@
     <div class="container">
       
         <table class="table table-dark">
-          <thead>
-
-            
+          <thead>        
             <tr>
+              <th >Orginazer</th>
               <th>Title</th>
               <th>Date</th>
               <th>Time</th>
@@ -19,7 +18,8 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
+            <tr> 
+              <td ><a href="{% url 'organizer-profile' event.added_by.id %}" >{{event.added_by}}</a></td>
               <td>{{event.title}}</td>
               <td>{{event.date}}</td>
               <td>{{event.time}}</td>
@@ -36,21 +36,17 @@
           </tbody>
         </table>
         <form id="show_form" class="msa_book col-4" action="{% url 'ticket-create' event.id %}" method="POST" >
-            {% csrf_token %}
-            {{ticket|crispy}}
-        {% if event_tickets_left <= 0 %}
-          <p class="button_style_disable button_style btn btn-outline" >No Seats Left</p>
-        {% else %}
-        <button class=" btn btn-outline" type="submit">Book</button>
-        {% endif %}
-        
+              {% csrf_token %}
+              
+                {{ticket|crispy}}
+                  
+                {% if event_tickets_left <= 0 %}
+                      <p class="button_style_disable button_style btn btn-outline" >No Seats Left</p>
+              {% else %}
+                    <button class=" btn btn-outline" type="submit">Book</button>
+              {% endif %}  
         </form>
 
-
-
-
-
-        
 
         {% if request.user == event.added_by %}
 
@@ -82,24 +78,4 @@
   </div>
 
 </header>
-<script>
-      $(document).ready(function(id) { 
-          
-          if(id = 0){
-            
-            document.getElementById("show_form").style.display = "none";
-            document.getElementById("check_seats").style.display = "block";
-            
-          }
-          else{
-            document.getElementById("show_form").style.display = "block";
-            document.getElementById("check_seats").style.display = "none";
-          }
-        });
-      
-    
-  </script>
-
-
-
 {% endblock %}

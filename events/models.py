@@ -15,10 +15,19 @@ class Event(models.Model):
         return self.seats - booked
 
 
-
 class Ticket(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=1, related_name='tickets')
     event = models.ForeignKey(Event, on_delete=models.CASCADE, default=1, related_name='tickets')
     datetime = models.DateTimeField(auto_now=True)
     tickets = models.IntegerField(default=0)
+
+
+class Following(models.Model):
+	user_follow = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_follow')
+	user_followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_followed')
+
+	def __str__(self):
+		return "%s favorited %s"%(self.user_follow.username, self.user_followed.username)
+
+
 
