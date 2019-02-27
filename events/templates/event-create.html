@@ -7,15 +7,16 @@
 
 
 <header class="masthead text-center text-white">
+    <h1 class="header_style">Create an Event</h1>
   <div class="masthead-content">
     <div class="container">
           <div class="card">
-            <h5 class="card-header">Create an Event</h5>
+            
             <div class="card-body">
-                  <form action="{% url 'event-create' %}" method="POST" >
+                  <form class="color_form" action="{% url 'event-create' %}" method="POST" >
                       {% csrf_token %}
                       {{form|crispy}}
-                      <input type="submit" value="Create" class="btn btn-outline-success">
+                      <input type="submit" value="Create" class="btn btn-outline-success button_style">
                   </form>
             </div>
           </div>

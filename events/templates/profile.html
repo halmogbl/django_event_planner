@@ -1,0 +1,205 @@
+
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <header class="masthead text-center text-white">
+          <div class="masthead-content">
+                <div class="container">
+                        <div class="container emp-profile">
+                                    <form method="post">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="profile-img">
+                                                    <img class="img-rounded" src="{{picture}}" alt=""/>
+                                                
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="profile-head">
+                                                            <h5>
+                                                                Kshiti Ghelani
+                                                            </h5>
+                                                            <h6>
+                                                                Web Developer and Designer
+                                                            </h6>
+                                                            <p class="proile-rating">RANKINGS : <span>8/10</span></p>
+                                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                                        <li class="nav-item">
+                                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                                        </li>
+                                                        <li class="nav-item">
+                                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                          
+                        
+                        
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                               
+                                            </div>
+                                            <div class="col-md-8">
+                                                <div class="tab-content profile-tab" id="myTabContent">
+                                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Username</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>{{profile.username}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>First Name</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>{{profile.first_name}}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Last Name</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>{{profile.last_name}}</p>
+                                                                    </div>
+                                                                </div>
+                        
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Email</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>{{profile.email}}</p>
+                                                                    </div>
+                                                                </div>
+                        
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Last Login</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>{{profile.last_login}}</p>
+                                                                    </div>
+                                                                </div>
+                                                    </div>
+                                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Experience</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>Expert</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Hourly Rate</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>10$/hr</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Total Projects</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>230</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>English Level</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>Expert</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="row">
+                                                                    <div class="col-md-6">
+                                                                        <label>Availability</label>
+                                                                    </div>
+                                                                    <div class="col-md-6">
+                                                                        <p>6 months</p>
+                                                                    </div>
+                                                                </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <label>Your Bio</label><br/>
+                                                                <p>Your detail description</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>           
+                                </div>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                                    <div class="row justify-content-center">
+                                          <!-- Button trigger modal -->
+                                            <button type="button" class="btn btn-primary btn-xl rounded-pill mt-2" data-toggle="modal" data-target="#exampleModal">
+                                              Edit Profile
+                                            </button>
+                                    </div>
+                            </div>
+                        
+                        
+                                           
+                </div>
+          </div>
+          <div class="bg-circle-1 bg-circle"></div>
+          <div class="bg-circle-2 bg-circle"></div>
+          <div class="bg-circle-3 bg-circle"></div>
+          <div class="bg-circle-4 bg-circle"></div>
+
+    </header>
+      <!-- Modal -->
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Edit my profile</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  
+      
+              <form action="{% url 'profile-edit' %}" method="POST" enctype="multipart/form-data" >
+                      <h1>Profile</h1>
+                      {% csrf_token %}
+                      {{ form | crispy }}
+                      
+      
+      
+              
+      
+      
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          </form>
+
+    {% endblock content %}

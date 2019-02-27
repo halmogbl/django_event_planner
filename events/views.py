@@ -8,6 +8,7 @@ from django.http import Http404
 from django.contrib.auth.models import User
 from django.db.models import Q
 from datetime import datetime
+from hashlib import md5
 
 
 def home(request):
@@ -154,9 +155,14 @@ def event_detail(request, event_id):
         return redirect('login')
     event = Event.objects.get(id=event_id)
     ticket = TicketForm()
-    
+
+
     event_tickets_added = event.tickets.all()
     event_tickets_left = event.seats_left()
+
+
+    if event_tickets_left == 0:
+        ticket.fields['tickets'].disabled = True
 
     context = {
 		"event": event,
@@ -209,3 +215,47 @@ def dashboard(request):
        #"final_calc": final_calc
     }
     return render(request, 'dashboard.html', context)
+
+
+
+def avatar(email, size):
+    digest = md5(email.lower().encode('utf-8')).hexdigest()
+    return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(digest, size)
+
+
+
+def profile(request):
+    profile_image = avatar(request.user.email, 512)
+    profile= request.user
+    form = UserSignup(instance=profile)
+    if request.user.is_anonymous:
+        return redirect('login')
+
+    context = {
+        "form": form,
+        "profile": profile,
+        "picture": profile_image
+    }
+    return render(request, 'profile.html', context)
+
+
+
+
+
+def profile_edit(request):
+    profile= request.user
+    if request.user.is_anonymous:
+        return redirect('login')
+
+
+    form = UserSignup(instance=profile)
+    if request.method == "POST":
+        form = UserSignup(request.POST, instance=profile)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(user.password)
+            user.save()
+            messages.success(request, "You have successfully updated your profile.")
+            login(request, user)
+            return redirect("profile")
+        return redirect("profile")
