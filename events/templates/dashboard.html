@@ -2,69 +2,98 @@
 
 {% block content %}
 <header class="masthead text-center text-white">
-  <div class="masthead-content">
-    <div class="container">
-      <h3 class="mb-0">Events I Orgnized</h3>
-      <a href=" {% url 'event-create' %}" >Create</a>
-        <table class="table table-dark">
-          <thead>
-            <tr>
-              <th>Title</th>
-              <th>Date</th>
-              <th>Time</th>
-              <th>Location</th>
-              <th>Capacity</th>
-              <th>Tickets Left</th>
-            </tr>
-          </thead>
-          <tbody>
+    <div class="masthead-content">
+          <div class="container">
+              <h3 class="mb-0">Events I Orgnized</h3>
+
+          <div class="container emp-profile">
+    
+
+    <div class="row">
+      <a href=" {% url 'event-create' %}" class="btn btn-outline-success button_style" >New Event</a>
+   </div>
+
+
+
+
+
+
+			<div class="[ col-xs-12 col-sm-offset-2 col-sm-12 ]">
+              <ul class="event-list my-5">
             {% for event in user_events_added %}
-            <tr>
-              <td>{{event.title}}</td>
-              <td>{{event.date}}</td>
-              <td>{{event.time}}</td>
-              <td>{{event.location}}</td>
-              <td>{{event.seats}}</td>
-              <td>{{event.seats_left}}</td>
-              <td><a href=" {% url 'event-detail' event.id %}"> View </a></td>
+                <li class="animate_msa">
+                  <time datetime="">
+                    <span class="day" style="font-size: 23pt;">{{event.time}}</span>
+                    <span class="month" style="font-size: 22pt;">{{event.date}}</span>
+                    <span class="time"></span>
+                  </time>
+                  {% if event.img %}
+                        <img alt="any" src="{{event.img.url}}" />
+                  {% endif %}
+                  <div class="info">
+                    <h2 class="title">{{event.title}}</h2>
+                    <p class="desc">Location: <b>{{event.location}}</b></p>
+                    <p class="desc">Capacity: <b class="text-success">{{event.seats}}</b></p>
+                    <p class="desc">Seats left: <b class="text-warning">{{event.seats_left}}</b></p>
+                    <ul>
+                      <li style="width:33%;"><span class="glyphicon glyphicon-ok"></span></li>
+                      <li style="width:34%;"></li>
+                      <a href=" {% url 'event-detail' event.id %}" class="btn btn-primary btn-xl rounded-pill mt-5 my-4"> <li style="width:33%;">View</li></a>
+                    </ul>
+                  </div>
+                  <div class="social">
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+			</div>
+		</div>
+	
 
-            </tr>
-            {% endfor %}
-          </tbody>
-        </table>
 
 
 
-
-      <h3 class="mb-0">Events I Attend</h3>
-      <table class="table table-dark">
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Date & Time</th>
-            <th>Location</th>
-            <th>Tickets</th>
-
-          </tr>
-        </thead>
-        <tbody>
-          {% for ticket in user_tickets_added %}
-          <tr>
-
-            <td>{{ticket.event.title}}</td>
-            <td>{{ticket.datetime}}</td>
-            <td>{{ticket.event.location}}</td>
-            <td>{{ticket.tickets}}</td>
-        
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
 
     </div>
   </div>
+  </div>
+  <h3 class="mb-0">Events I Attend</h3>
+      <div class="masthead-content ">
+            <div class="container">
+                <div class="container emp-profile">
+                <table class="table table-dark text-light">
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Date & Time</th>
+                      <th>Location</th>
+                      <th>Tickets Booked</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for ticket in user_tickets_added %}
+                    <tr>
+                      <td>{{ticket.event.title}}</td>
+                      <td>{{ticket.datetime}}</td>
+                      <td>{{ticket.event.location}}</td>
+                      <td>{{ticket.tickets}}</td>
+                      <td><a href=" {% url 'event-detail' ticket.event.id %}"> View </a></td>
 
-</header>
+                    </tr>
+                  
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+            <div class="bg-circle-1 bg-circle"></div>
+            <div class="bg-circle-2 bg-circle"></div>
+            <div class="bg-circle-3 bg-circle"></div>
+            <div class="bg-circle-4 bg-circle"></div>
+  
+          </header>
+
 
 
 

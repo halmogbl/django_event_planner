@@ -13,7 +13,7 @@
           <div class="card">
             
             <div class="card-body">
-                  <form class="color_form" action="{% url 'event-create' %}" method="POST" >
+                  <form class="color_form" action="{% url 'event-create' %}" method="POST" enctype="multipart/form-data" >
                       {% csrf_token %}
                       {{form|crispy}}
                       <input type="submit" value="Create" class="btn btn-outline-success button_style">

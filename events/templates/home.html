@@ -5,32 +5,57 @@
     <header class="masthead text-center text-white">
           <div class="masthead-content">
                 <div class="container">
+                  
                       <h1 class="masthead-heading mb-0">All the events,</h1>
                       <h2 class="masthead-subheading mb-0">You could ever want...</h2>
 
                       {% if request.user.is_anonymous %}
                           <a href="{% url 'signup' %}" class="btn btn-primary btn-xl rounded-pill mt-5">Sign up to find events!</a>
                       {% else %}
-                           <a href="{% url 'event-list' %}" class="btn btn-primary btn-xl rounded-pill mt-5">See more events and lookfor what you like!</a>
 
                       {% endif %}
 
                       {% for event in recent_events %}
+                         
+   
 
-                                  <br>
-                                  <br>
-                                  <br>
-                                  <br>
-                          <div class="animate_msa card w-100">
-                                <div class="card-body" >
-                                      <h2 class="text-dark">{{event.title}}</h2>
-                                      <p class="text-dark" >{{event.description}}</p>
-                                      <p class="text-dark" >{{event.date}}   {{event.time}}</p>
-
-                                      <a href= "{% url 'event-detail' event.id %}" class="btn btn-primary btn-xl rounded-pill mt-5">View this event</a>
-                                </div>
-                          </div>
+                          <div class="[ col-xs-12 col-sm-offset-2 col-sm-12 ]">
+                                    <ul class="event-list my-5">
+                                      <li class="animate_msa">
+                                        <time datetime="">
+                                          <span class="day" style="font-size: 23pt;">{{event.time}}</span>
+                                          <span class="month" style="font-size: 22pt;">{{event.date}}</span>
+                                          <span class="time"></span>
+                                        </time>
+                  {% if event.img %}
+                        <img alt="My 24th Birthday!" src="{{event.img.url}}" />
+                  {% endif %}
+                                        <div class="info" style="background-color:#fff;">
+                                          <h2 class="title " style="color:#2d2b33;">{{event.title}}</h2>
+                                          <p class="desc " style="color:#2d2b33;">Location: <b>{{event.location}}</b></p>
+                                          <p class="desc " style="color:#2d2b33;">Capacity: <b class="text-success">{{event.seats}}</b></p>
+                                          <p class="desc " style="color:#2d2b33;">Seats left: <b class="text-warning">{{event.seats_left}}</b></p>
+                                          <ul>
+                                            <li style="width:33%;"><span class="glyphicon glyphicon-ok"></span></li>
+                                            <li style="width:34%;"></li>
+                                            <a href=" {% url 'event-detail' event.id %}" class="btn btn-primary btn-xl rounded-pill mt-5 my-4"> <li style="width:33%;">View</li></a>
+                                          </ul>
+                                        </div>
+                                        <div class="social">
+                                        </div>
+                                      </li>
+                                    </ul>
+                                        </div>
                       {% endfor %}
+                      
+
+                      {% if request.user.is_anonymous %}
+                        
+                      {% else %}
+                       <a href="{% url 'event-list' %}" class="btn btn-primary btn-xl rounded-pill mt-5">See more events and lookfor what you like!</a>
+
+                  {% endif %}
+
 
 
                 </div>

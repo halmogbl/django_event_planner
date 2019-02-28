@@ -9,7 +9,8 @@ class Event(models.Model):
     time = models.TimeField()
     seats = models.IntegerField()
     added_by = models.ForeignKey(User, on_delete=models.CASCADE, default=1, related_name='events')
-
+    img = models.ImageField(null = True , blank = True)
+    
     def seats_left(self):
         booked = sum(self.tickets.all().values_list('tickets', flat=True))
         return self.seats - booked
@@ -27,7 +28,7 @@ class Following(models.Model):
 	user_followed = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_followed')
 
 	def __str__(self):
-		return "%s favorited %s"%(self.user_follow.username, self.user_followed.username)
+		return "%s followed %s"%(self.user_follow.username, self.user_followed.username)
 
 
 

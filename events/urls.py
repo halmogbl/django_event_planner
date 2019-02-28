@@ -9,6 +9,9 @@ from api.views import (
     EventDelete,
     UserCreateAPIView,
     UserLoginAPIView,
+	Following,
+	TicketList,
+	TicketCreate
 )
 
 urlpatterns = [
@@ -39,5 +42,8 @@ urlpatterns = [
 	path('api/add/', EventCreate.as_view(), name='api-create'),
 	path('api/signup/', UserCreateAPIView.as_view(), name='api-signup'),
 	path('api/signin/', UserLoginAPIView.as_view(), name='api-signin'),
-
+	path('api/following/', Following.as_view(), name='api-following'),
+	path('api/ticketList/<int:event_id>/', TicketList.as_view(), name='api-ticketList'),
+	path('api/ticket/add/<int:event_id>/', TicketCreate.as_view(), name='api-ticket-create'),
+      	
 ]

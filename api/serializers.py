@@ -1,13 +1,21 @@
 from rest_framework import serializers
-from events.models import Event, Ticket
+from events.models import Event, Ticket, Following
 from django.contrib.auth.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email']
 
+class FollowingSerializer(serializers.ModelSerializer):
+
+    user_follow = UserSerializer()
+    user_followed  = UserSerializer()
+    class Meta:
+        model = Following
+        fields = '__all__'
 
 
 
@@ -45,23 +53,50 @@ class UserLoginSerializer(serializers.Serializer):
         return data
 
 
-
-
 class EventListSerializer(serializers.ModelSerializer):
+
     detail = serializers.HyperlinkedIdentityField(
             view_name = 'api-detail',
             lookup_field = 'id',
             lookup_url_kwarg = 'event_id',
         )
 
+    tickets_count = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Event
-        fields = ['id', 'title', 'detail',]
+        fields = ['id', 'title', 'detail','tickets_count']
+
+    def get_tickets_count(self, obj):
+        return obj.tickets.count()
+
+
+
+class TicketListSerializer(serializers.ModelSerializer):
+
+
+    user = UserSerializer()
+
+    event = EventListSerializer()
+
+    class Meta:
+        model = Ticket
+        fields = '__all__'
+
+    def get_booking(self, obj):
+        return obj.tickets.count()
+
+
 
 
 class EventDetailSerializer(serializers.ModelSerializer):
+    tickets = TicketListSerializer(many=True)
+
     added_by = UserSerializer()
+
+
+
 
     update = serializers.HyperlinkedIdentityField(
             view_name = 'api-update',
@@ -83,3 +118,8 @@ class EventCreateUpdateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Event
         exclude = ['added_by',]
+
+class TicketCreateUpdateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ticket
+        exclude = ['user','event',]

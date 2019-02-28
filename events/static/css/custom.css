@@ -1,3 +1,14 @@
+.header.masthead .bg-circle {
+    background: linear-gradient(0deg,#2D2B33 0,#706D78 100%);
+}
+
+header.masthead{
+    background: linear-gradient(0deg,#1B1826 0,#706D78 100%);
+}
+header.masthead .bg-circle{
+    background: linear-gradient(0deg,#1B1826 0,#706D78 100%);
+}
+
 .color_form {
     color:#2d2b33;
     text-align: left;
@@ -15,9 +26,19 @@ color:#fff!important;
 .orgin_color{
     color:green!important;
 }
-
+.img_size_dashboard{
+    object-fit: cover;
+    width:200px;
+    height:200px"
+}
+.border_radius{
+    border-radius: 10px; 
+}
 .header_style{
     color:#fff;
+}
+.header_style_2{
+    color:#2d2b33!important;
 }
 .button_style{
     color:#2d2b33;
@@ -35,14 +56,18 @@ color:#fff!important;
 }
 .animate_msa {
     width: 100px;
-    height: 300px;
+    height: auto;
     box-shadow: 0 0 11px rgba(33,33,33,.2);
     position: relative;
   
   }
-
+  .desc_home{
+      color:#2d2b33;
+      font-size: 13pt;
+      font-weight: 300;
+      margin: 0px;
+  }
 .animate_msa:hover {
-width: 100px;
 position: relative;
 -webkit-animation-name: example; /* Safari 4.0 - 8.0 */
 -webkit-animation-duration: 6s; /* Safari 4.0 - 8.0 */
@@ -53,20 +78,20 @@ animation-iteration-count: infinite;
 
 /* Safari 4.0 - 8.0 */
 @-webkit-keyframes example {
-0%   {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-25%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-50%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-75%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-100% {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
+0%   {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+25%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+50%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+75%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+100% {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
 }
 
 /* Standard syntax */
 @keyframes example {
-0%   {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-25%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-50%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-75%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
-100% {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);}
+0%   {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+25%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+50%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+75%  {top:-20px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
+100% {top:-10px;box-shadow: 0 0 14px rgba(33,33,33,.619);right:-20px;}
 }
 
 .profile-img img {
@@ -74,7 +99,9 @@ animation-iteration-count: infinite;
 
 }
 
-
+.margin-top{
+    margin-top:10px;
+}
 .msa_book {
     background-color: #212529!important;
     padding: 20px;
@@ -192,3 +219,160 @@ animation-iteration-count: infinite;
 
 
 /************EndProfile************/
+.event-list {
+    list-style: none;
+    font-family: 'Lato', sans-serif;
+    margin: 0px;
+    padding: 0px;
+}
+.event-list > li {
+    background-color: rgb(255, 255, 255);
+    box-shadow: 0px 0px 5px rgb(51, 51, 51);
+    box-shadow: 0px 0px 5px rgba(51, 51, 51, 0.7);
+    padding: 0px;
+    margin: 0px 0px 20px;
+}
+.event-list > li > time {
+    display: inline-block;
+    width: 100%;
+    color: rgb(255, 255, 255);
+    background-color: rgb(197, 44, 102);
+    padding: 5px;
+    text-align: center;
+    text-transform: uppercase;
+}
+.event-list > li:nth-child(even) > time {
+    background-color: rgb(165, 82, 167);
+}
+.event-list > li > time > span {
+    display: none;
+}
+.event-list > li > time > .day {
+    display: block;
+    font-size: 56pt;
+    font-weight: 100;
+    line-height: 1;
+}
+.event-list > li time > .month {
+    display: block;
+    font-size: 24pt;
+    font-weight: 900;
+    line-height: 1;
+}
+.event-list > li > img {
+    width: 100%;
+}
+.event-list > li > .info {
+    padding-top: 5px;
+    text-align: center;
+}
+.event-list > li > .info > .title {
+    font-size: 17pt;
+    font-weight: 700;
+    margin: 0px;
+    color:#fff;
+}
+.event-list > li > .info > .desc {
+    font-size: 13pt;
+    font-weight: 300;
+    margin: 0px;
+    color:#fff;
+}
+.event-list > li > .info > ul,
+.event-list > li > .social > ul {
+    display: table;
+    list-style: none;
+    margin: 10px 0px 0px;
+    padding: 0px;
+    width: 100%;
+    text-align: center;
+}
+.event-list > li > .social > ul {
+    margin: 0px;
+}
+.event-list > li > .info > ul > li,
+.event-list > li > .social > ul > li {
+    display: table-cell;
+    color: rgb(30, 30, 30);
+    font-size: 11pt;
+    font-weight: 300;
+    padding: 3px 0px;
+}
+.event-list > li > .info > ul > li > a {
+    display: block;
+    width: 100%;
+    color: rgb(30, 30, 30);
+    text-decoration: none;
+} 
+.event-list > li > .social > ul > li {    
+    padding: 0px;
+}
+.event-list > li > .social > ul > li > a {
+    padding: 3px 0px;
+} 
+
+
+@media (min-width: 768px) {
+    .event-list > li {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 120px;
+        padding: 0px;
+    }
+    .event-list > li > time,
+    .event-list > li > img  {
+        display: inline-block;
+    }
+    .event-list > li > time,
+    .event-list > li > img {
+        width: 120px;
+        float: left;
+    }
+    .event-list > li > .info {
+        background-color: #2d2b33;
+        overflow: hidden;
+    }
+    .event-list > li > time,
+    .event-list > li > img {
+        width: 120px;
+        height: 120px;
+        padding: 0px;
+        margin: 0px;
+    }
+    .event-list > li > .info {
+        position: relative;
+        height: 120px;
+        text-align: left;
+        padding-right: 40px;
+    }	
+    .event-list > li > .info > .title, 
+    .event-list > li > .info > .desc {
+        padding: 0px 10px;
+    }
+    .event-list > li > .info > ul {
+        position: absolute;
+        left: 0px;
+        bottom: 0px;
+    }
+    .event-list > li > .social {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        display: block;
+        width: 40px;
+    }
+    .event-list > li > .social > ul {
+        border-left: 1px solid rgb(230, 230, 230);
+    }
+    .event-list > li > .social > ul > li {			
+        display: block;
+        padding: 0px;
+    }
+    .event-list > li > .social > ul > li > a {
+        display: block;
+        width: 40px;
+        padding: 10px 0px 9px;
+    }
+}
+/*****************/

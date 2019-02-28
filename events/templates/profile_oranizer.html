@@ -16,16 +16,16 @@
                                     <div class="col-md-6">
                                         <div class="profile-head">
                                                     <h5>
-                                                            {{user.first_name}} {{user.last_name}} <span>  Followrs( {{follow_count}} )</span>
+                                                            {{user_obj.first_name}} {{user_obj.last_name}} <span> </span>
                                                     </h5>
                                                         
                                                     <h6>
                                                         
                                                             
                                                             
-                                                        <button onclick="follow({{user.id}})" id="user-{{user.id}}" href="#" class="btn btn-outline {% if user.id in following %} text_follow   {% else %} text_follow_border{% endif %}">
+                                                        <button onclick="follow({{user_obj.id}})" id="user-{{user_obj.id}}" href="#" class="btn btn-outline {% if user_obj.id in following %} text_follow   {% else %} text_follow_border{% endif %}">
                                                             
-                                                        {% if user.id in following %}
+                                                        {% if user_obj.id in following %}
                                                             
                                                             Following
                                                         
@@ -48,11 +48,14 @@
                                                     
                                             <ul class="nav nav-tabs" id="myTab" role="tablist">
                                                 <li class="nav-item">
-                                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                                                    <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">User Info</a>
                                                 </li>
                                                 <li class="nav-item">
-                                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Assigned Events</a>
+                                                    <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Followrs(<span id="oldFollowres">{{follow_count}}</span><span id="followersCount"></span>)</a>
                                                 </li>
+                                                <li class="nav-item">
+                                                        <a class="nav-link" id="follow-tab" data-toggle="tab" href="#follow" role="tab" aria-controls="follow" aria-selected="false">Following(<span id="oldFollowing">{{my_following_count}}</span><span id="followingCount"></span>)</a>
+                                                    </li>
                                             </ul>
                                         </div>
                                     </div>
@@ -68,7 +71,7 @@
                                                                 <label>Username:</label>
                                                             </div>
                                                             <div class="color_form  col-md-6">
-                                                                <p>{{user.username}}</p>
+                                                                <p>{{user_obj.username}}</p>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -76,7 +79,7 @@
                                                                 <label>First Name:</label>
                                                             </div>
                                                             <div class="color_form  col-md-6">
-                                                                <p>{{user.first_name}}</p>
+                                                                <p>{{user_obj.first_name}}</p>
                                                             </div>
                                                         </div>
                                                         <div class="row">
@@ -84,7 +87,7 @@
                                                                 <label>Last Name:</label>
                                                             </div>
                                                             <div class="color_form  col-md-6">
-                                                                <p>{{user.last_name}}</p>
+                                                                <p>{{user_obj.last_name}}</p>
                                                             </div>
                                                         </div>
                 
@@ -93,12 +96,12 @@
                                                                 <label>Email:</label>
                                                             </div>
                                                             <div class="color_form col-md-6">
-                                                                <p>{{user.email}}</p>
+                                                                <p>{{user_obj.email}}</p>
                                                             </div>
                                                         </div>
                 
                                                         <div class="row">
-                                                            <div class="col-md-6">
+                                                            <div class=" color_form col-md-6">
                                                                 <label>Last Login:</label>
                                                             </div>
                                                             <div class="col-md-6">
@@ -108,50 +111,51 @@
                                             </div>
                                             <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
                                                         <div class="row">
-                                                            <div class="col-md-6">
-                                                                <label>Experience</label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <p>Expert</p>
-                                                            </div>
+                                                                {% for follow in followrs %}
+                                                                      
+                                                                <table class="table table-light text-dark">
+                                        
+                                                             <tbody>
+
+                                                            <tr>  
+                                                                <td></td>
+                                                                <td>{{follow.user_follow.username}}</td>
+                                                                <td>{{follow.user_follow.email}}</td>
+                                                                <td><a href="{% url 'organizer-profile' follow.user_followed.id %}">View</a></td>
+
+                                                    
+                                                            </tr>
+                                                           </tbody>
+                                                        </table>
+
+
+
+                                                                {% endfor %}
                                                         </div>
+                                                </div>
+                                                <div class="tab-pane fade" id="follow" role="tabpanel" aria-labelledby="follow-tab">
                                                         <div class="row">
-                                                            <div class="col-md-6">
-                                                                <label>Hourly Rate</label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <p>10$/hr</p>
-                                                            </div>
+                                                                {% for follow in my_following %}
+                                                                      
+                                                                <table class="table table-light text-dark">
+                                        
+                                                             <tbody>
+
+                                                            <tr>  
+                                                                <td></td>
+                                                                <td>{{follow.user_followed.username}}</td>
+                                                                <td>{{follow.user_followed.email}}</td>
+                                                                <td><a href="{% url 'organizer-profile' follow.user_followed.id %}">View</a></td>
+
+                                                    
+                                                            </tr>
+                                                           </tbody>
+                                                        </table>
+
+
+
+                                                                {% endfor %}
                                                         </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <label>Total Projects</label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <p>230</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <label>English Level</label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <p>Expert</p>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class="col-md-6">
-                                                                <label>Availability</label>
-                                                            </div>
-                                                            <div class="col-md-6">
-                                                                <p>6 months</p>
-                                                            </div>
-                                                        </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <label>Your Bio</label><br/>
-                                                        <p>Your detail description</p>
-                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -171,23 +175,34 @@
     </header>
     <script>
             function follow(id){
-                let button = "#user-" + id;
+                let button = "#user-" + {{user_obj.id}};
                 $.ajax({
                     type: "GET",
-                    url: "/follow/"+id+"/",
+                    url: "{% url 'following' user_obj.id %}",
                     success: function(data){
 
                         if(data.followed){
-                             
+
+                            $("#oldFollowing").hide();
+                            $("#oldFollowres").hide();
+
+
                             $("button").text('Following');
                             $(button).addClass('text_follow');
 
+                            $("#followingCount").text(data.my_following_count);
+                            $("#followersCount").text(data.follow_count);
                         }
                         else{
                             
                             $("button").text('Follow');
                             $(button).removeClass('text_follow');
                             $(button).addClass('text_follow_border');
+                            $("#oldFollowing").hide();
+                            $("#oldFollowres").hide();
+                            
+                            $("#followingCount").text(data.my_following_count);
+                            $("#followersCount").text(data.follow_count);
 
 
 

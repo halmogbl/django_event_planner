@@ -6,140 +6,144 @@
     <header class="masthead text-center text-white">
           <div class="masthead-content">
                 <div class="container">
-                        <div class="container emp-profile">
-                                    <form method="post">
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                                <div class="profile-img">
-                                                    <img class="img-rounded" src="{{picture}}" alt=""/>
+                <div class="container emp-profile">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="profile-img">
+                                <img class="img-rounded" src="{{picture}}" alt=""/>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="profile-head">
+                                <h5>
+                                    {{profile.first_name}} {{profile.last_name}}
+                                </h5>
+                            
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">User Info</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">My Followers( {{follow_count}} )</a>
+                                    </li>
+                                    <li class="nav-item">
+                                            <a class="nav-link" id="follow-tab" data-toggle="tab" href="#follow" role="tab" aria-controls="follow" aria-selected="false">My Following( {{my_following_count}} )</a>
+                                        </li>
+
+
+                            
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="tab-content profile-tab" id="myTabContent">
+                                <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                            <div class="color_form row">
+                                                <div class=" color_form  col-md-6">
+                                                    <label>Username:</label>
+                                                </div>
+                                                <div class="color_form  col-md-6">
+                                                    <p>{{profile.username}}</p>
                                                 </div>
                                             </div>
-                                            <div class="col-md-6">
-                                                <div class="profile-head">
-                                                            <h5>
-                                                                    {{profile.first_name}} {{profile.last_name}}
-                                                            </h5>
-                                                           
-                                                    <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                                        <li class="nav-item">
-                                                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Timeline</a>
-                                                        </li>
-                                                    </ul>
+                                            <div class="row">
+                                                <div class="color_form  col-md-6">
+                                                    <label>First Name:</label>
+                                                </div>
+                                                <div class="color_form  col-md-6">
+                                                    <p>{{profile.first_name}}</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-4">
-                                            </div>
-                                            <div class="col-md-8">
-                                                <div class="tab-content profile-tab" id="myTabContent">
-                                                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                                                                <div class="color_form row">
-                                                                    <div class=" color_form  col-md-6">
-                                                                        <label>Username:</label>
-                                                                    </div>
-                                                                    <div class="color_form  col-md-6">
-                                                                        <p>{{profile.username}}</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="color_form  col-md-6">
-                                                                        <label>First Name:</label>
-                                                                    </div>
-                                                                    <div class="color_form  col-md-6">
-                                                                        <p>{{profile.first_name}}</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="color_form  col-md-6">
-                                                                        <label>Last Name:</label>
-                                                                    </div>
-                                                                    <div class="color_form  col-md-6">
-                                                                        <p>{{profile.last_name}}</p>
-                                                                    </div>
-                                                                </div>
-                        
-                                                                <div class="row">
-                                                                    <div class="color_form col-md-6">
-                                                                        <label>Email:</label>
-                                                                    </div>
-                                                                    <div class="color_form col-md-6">
-                                                                        <p>{{profile.email}}</p>
-                                                                    </div>
-                                                                </div>
-                        
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Last Login:</label>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p>{{profile.last_login}}</p>
-                                                                    </div>
-                                                                </div>
-                                                    </div>
-                                                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Experience</label>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p>Expert</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Hourly Rate</label>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p>10$/hr</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Total Projects</label>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p>230</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>English Level</label>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p>Expert</p>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="row">
-                                                                    <div class="col-md-6">
-                                                                        <label>Availability</label>
-                                                                    </div>
-                                                                    <div class="col-md-6">
-                                                                        <p>6 months</p>
-                                                                    </div>
-                                                                </div>
-                                                        <div class="row">
-                                                            <div class="col-md-12">
-                                                                <label>Your Bio</label><br/>
-                                                                <p>Your detail description</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                            <div class="row">
+                                                <div class="color_form  col-md-6">
+                                                    <label>Last Name:</label>
+                                                </div>
+                                                <div class="color_form  col-md-6">
+                                                    <p>{{profile.last_name}}</p>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </form>           
+    
+                                            <div class="row">
+                                                <div class="color_form col-md-6">
+                                                    <label>Email:</label>
+                                                </div>
+                                                <div class="color_form col-md-6">
+                                                    <p>{{profile.email}}</p>
+                                                </div>
+                                            </div>
+    
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <label>Last Login:</label>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <p>{{profile.last_login}}</p>
+                                                </div>
+                                            </div>
                                 </div>
-                                    <div class="row justify-content-center">
-                                          <!-- Button trigger modal -->
-                                            <button type="button" class="btn btn-primary btn-xl rounded-pill mt-2" data-toggle="modal" data-target="#exampleModal">
-                                              Edit Profile
-                                            </button>
-                                    </div>
-                            </div>                       
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="row">
+                                                {% for follow in followrs %}
+                                                      
+                                                <table class="table table-light text-dark">
+                        
+                                             <tbody>
+
+                                            <tr>  
+                                                <td></td>
+                                                <td>{{follow.user_follow.username}}</td>
+                                                <td>{{follow.user_follow.email}}</td>
+                                                <td><a href="{% url 'organizer-profile' follow.user_followed.id %}">View</a></td>
+                                                
+                                                
+                                            </tr>
+                                           </tbody>
+                                        </table>
+
+
+
+                                                {% endfor %}
+                                        </div>      
+                                </div>
+                                <div class="tab-pane fade" id="follow" role="tabpanel" aria-labelledby="follow-tab">
+                                        <div class="row">
+                                                {% for follow in my_following %}
+                                                      
+                                                <table class="table table-light text-dark">
+                        
+                                             <tbody>
+
+                                            <tr>  
+                                                <td></td>
+                                                <td>{{follow.user_followed.username}}</td>
+                                                <td>{{follow.user_followed.email}}</td>
+                                                <td><a href="{% url 'organizer-profile' follow.user_followed.id %}">View</a></td>
+                                                
+                                                
+                                            </tr>
+                                           </tbody>
+                                        </table>
+
+
+
+                                                {% endfor %}
+                                        </div>      
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                        </div>
+                        <div class="row justify-content-center">
+                                <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-primary btn-xl rounded-pill mt-2" data-toggle="modal" data-target="#exampleModal">
+                                Edit Profile
+                            </button>
+                        </div>
+                    </div>                       
                 </div>
           </div>
           <div class="bg-circle-1 bg-circle"></div>
@@ -165,12 +169,6 @@
                       <h1>Profile</h1>
                       {% csrf_token %}
                       {{ form | crispy }}
-                      
-      
-      
-              
-      
-      
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

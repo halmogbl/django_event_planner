@@ -6,13 +6,16 @@ from rest_framework.generics import (
     DestroyAPIView,
     CreateAPIView,
 )
-from events.models import Event
+from events.models import Event, Ticket, Following
 from .serializers import(
     EventListSerializer,
     EventDetailSerializer,
     EventCreateUpdateSerializer,
     UserCreateSerializer,
     UserLoginSerializer,
+    TicketListSerializer,
+    FollowingSerializer,
+    TicketCreateUpdateSerializer,
 )
 from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from .permissions import IsNoob
@@ -50,6 +53,24 @@ class EventList(ListAPIView):
     filter_backends = [SearchFilter, OrderingFilter,]
     search_fields = ['title', 'description',]
 
+
+class TicketList(RetrieveAPIView):
+    queryset = Ticket.objects.all()
+    serializer_class = TicketListSerializer
+    permission_classes = [AllowAny,]
+    lookup_field = 'id'
+    lookup_url_kwarg = 'event_id'
+
+
+
+class Following(ListAPIView):
+
+    queryset = Following.objects.all()
+    serializer_class = FollowingSerializer
+
+
+
+
 class EventDetail(RetrieveAPIView):
     queryset = Event.objects.all()
     serializer_class = EventDetailSerializer
@@ -63,6 +84,19 @@ class EventCreate(CreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(added_by=self.request.user)
+
+
+class TicketCreate(CreateAPIView):
+    serializer_class = TicketCreateUpdateSerializer
+    lookup_field = 'id'
+    lookup_url_kwarg = 'event_id'
+    permission_classes = [IsAuthenticated,]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+
+
 
 class EventUpdate(RetrieveUpdateAPIView):
     queryset = Event.objects.all()

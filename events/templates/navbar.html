@@ -15,17 +15,23 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+          <a class="btn btn-primary btn-s rounded-pill mr-4 my-0" href="{% url 'event-create' %}">Create an event</a>
         </li>
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle " href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ request.user }}
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <a class="dropdown-item" href="{% url 'dashboard' %}">Dashboard</a>
+                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+              <div class="dropdown-divider"></div>
+              <a class="dropdown-item" href="{% url 'logout' %}">Log Out</a>
+            </div>
+          </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'event-create' %}">Create an event</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="{% url 'profile' %}">Profile</a>
-        </li>
-        
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">{{ request.user }}</a>
+      {% if request.user.img %}
+            <img alt="any" src="{{profile_image}}" />
+      {% endif %}
         </li>
         {% endif %}
       </ul>

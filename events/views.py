@@ -9,11 +9,13 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from datetime import datetime
 from hashlib import md5
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 def home(request):
     recent_events = Event.objects.filter(date__gte=datetime.today()).order_by('-date','time')[ :10 ]
-
+    
     context = {
         "recent_events": recent_events,
     }
@@ -33,7 +35,6 @@ def event_list(request):
 
     context = {
        "events": events
-
     }
     return render(request, 'event_list.html', context)
 
@@ -100,12 +101,29 @@ class Logout(View):
 
 def event_create(request):
     form = EventForm()
+    if request.user.is_anonymous:
+        return redirect('login')
+
     if request.method == "POST":
-        form = EventForm(request.POST)
+        form = EventForm(request.POST,request.FILES)
         if form.is_valid():
             event = form.save(commit=False)
             event.added_by = request.user
             event.save()
+            
+            # #recive_list= []
+            # #followers_emails = request.user.user_followed.all().values_list('user_follow__email',flat=True)
+            # for email in followers_emails:
+            #     recive_list.append(email)
+            
+            # #Email to the signed user
+            # subject = 'New Event has been created'
+            # message = 'new event has created an event'
+            # email_from = settings.EMAIL_HOST_USER
+            # recipient_list = [recive_list]
+            # send_mail( subject, message, email_from, recipient_list )
+
+
             return redirect('dashboard')
     context = {
         "form":form,
@@ -125,7 +143,7 @@ def event_update(request, event_id):
 
     form = EventForm(instance=event)
     if request.method == "POST":
-        form = EventForm(request.POST, instance=event)
+        form = EventForm(request.POST,request.FILES ,instance=event)
         if form.is_valid():
             form.save()
             return redirect("dashboard")
@@ -160,7 +178,7 @@ def event_detail(request, event_id):
     event_tickets_added = event.tickets.all()
     event_tickets_left = event.seats_left()
 
-    if event_tickets_left == 0:
+    if event_tickets_left <= 0:
         ticket.fields['tickets'].disabled = True
 
     context = {
@@ -190,13 +208,22 @@ def add_Ticket(request, event_id):
             booking.event = event
             booking.user = request.user
             booking.save()
+            subject = 'Django Event Planner'
+            #Email to the signed user
+            message = 'Thank you for booking from our site'
+            email_from = settings.EMAIL_HOST_USER
+            recipient_list = [request.user.email]
+            send_mail( subject, message, email_from, recipient_list )
+
+
             return redirect('dashboard')
     return redirect('event-detail', event_id=event_id)
 
 
 
 def dashboard(request):
-
+    if request.user.is_anonymous:
+        return redirect('login')
     user_events_added = request.user.events.all()
     user_tickets_added = request.user.tickets.all()
     
@@ -217,15 +244,39 @@ def avatar(email, size):
 def profile(request):
     if request.user.is_anonymous:
         return redirect('login')
+    
 
     profile_image = avatar(request.user.email, 512)
     profile= request.user
     form = UserSignup(instance=profile)
 
+    user_events = profile.events.all()
+    user_followed_obj = User.objects.get(id=request.user.id)
+
+    
+    
+    # who is following
+    my_following = user_followed_obj.user_follow.all()
+    my_following_count = user_followed_obj.user_follow.count()
+    
+    
+    
+    # who is followers
+    followrs = user_followed_obj.user_followed.all()
+    follow_count = user_followed_obj.user_followed.count()
+
+
+
     context = {
         "form": form,
         "profile": profile,
-        "picture": profile_image
+        "picture": profile_image,
+        "user_events":user_events,
+        "follow_count":follow_count,
+        "my_following_count":my_following_count,
+        "followrs":followrs,
+        "my_following": my_following
+
     }
     return render(request, 'profile.html', context)
 
@@ -255,18 +306,32 @@ def organizer_profile(request,added_by):
     
     user = User.objects.get(id=added_by)
     events = Event.objects.filter(added_by = user)
+    
 
     profile_image = avatar(user.email, 512)
+    user_followed_obj = User.objects.get(id=added_by)
 
-    following = []
+    #get who's my followre
+    follow_count = user_followed_obj.user_followed.count()
+    followrs = user.user_followed.all()
+
+    
+    #get who I follow
+    my_following_count = user_followed_obj.user_follow.count()
+    my_following = user_followed_obj.user_follow.all()
+    
     if request.user.is_authenticated:
         following = request.user.user_follow.all().values_list('user_followed', flat=True)
 
     context = {
+        "followrs":followrs,
+        "my_following":my_following,
         "events": events,
-        "user": user,
+        "user_obj": user,
         "picture": profile_image,
-        "following":following
+        "following":following,
+        "follow_count":follow_count,
+        "my_following_count":my_following_count,
     }
     return render(request, 'profile_oranizer.html', context)
 
@@ -288,10 +353,17 @@ def following(request,added_by):
         follow.delete()
 
     follow_count = user_followed_obj.user_followed.count()
-    print(follow_count)
+
+    #Who many my followre
+    my_follow_count = user_followed_obj.user_followed.count()
+    #print("my folowres" + str(my_following_count))
+   #Who many my Folloing
+    my_following_count = user_followed_obj.user_follow.count()
+    #print("my following" + my_follow_count))
 
     response = {
         "followed": followed,
         "follow_count": follow_count,
+        "my_following_count":my_following_count
     }
     return JsonResponse(response)
